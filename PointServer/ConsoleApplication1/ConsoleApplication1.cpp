@@ -11,6 +11,13 @@ using namespace std;
 // 4 - точка; 4
 // 5 - точка другого игрока; 4
 
+
+void MovingCursor(int x, int y)
+{
+    COORD coord = { x , y };
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
 vector <vector<int>> CreateField(vector <vector<int>> Field, int x , int y)
 {
     int a, b;
@@ -95,10 +102,17 @@ void PrintField(vector <vector<int>> Field, bool Motion)
     cout << endl << endl;
 }
 
-void MovingCursor(int x, int y)
+void PrintMenu(int x, int y)
 {
-    COORD coord = {x , y};
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+    MovingCursor((x * 2 + 1) + 10, 2);
+    cout << "MENU:";
+    MovingCursor((x * 2 + 1) + 10, 4);
+    cout << "[1] Give up";
+    MovingCursor((x * 2 + 1) + 10, 6);
+    cout << "[2] Suggest a draw";
+    MovingCursor((x * 2 + 1) + 10, 8);
+    cout << "[3] End the game";
+    MovingCursor(0, 4 + (y * 2 + 1));
 }
 
 int main()
@@ -115,8 +129,10 @@ int main()
     {
         Motion = (Motion? 0 : 1);
         PrintField(Field, Motion);
+        PrintMenu(x, y);
         cout << "Enter the coordinates of the point: ";
-        cin >> XCoordPoint >> YCoordPoint;
+        cin >> XCoordPoint;
+        cin >> YCoordPoint;
         XCoordPoint = toupper(XCoordPoint);
         YCoordPoint = toupper(YCoordPoint);
         while ((XCoordPoint < 65 || YCoordPoint < 65) || (XCoordPoint >= (x + 65) || YCoordPoint >= (y + 65)))
